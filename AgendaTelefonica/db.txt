@@ -1,0 +1,3 @@
+02|Tyron|Lannister|5a C|111222|08/02/2024|
+01|George|Lucas|2a C|333444|08/02/1990|
+03|Lucas|Battaglia|2 calle|555666|08/02/2024|
