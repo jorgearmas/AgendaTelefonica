@@ -1,17 +1,70 @@
 
 package gui;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;  // Import the IOException class to handle errors
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 
 public class Principal extends javax.swing.JFrame {
     
-    String DNIS[] = new String[10];
-    String nombres[] = new String[10];
-    String apellidos[] = new String[10];
-    String direcciones[] = new String[10];
-    String telefonos[] = new String[10];
-    String fechasNac[] = new String[10];
+    static String DNIS[] = new String[10];
+    static String nombres[] = new String[10];
+    static String apellidos[] = new String[10];
+    static String direcciones[] = new String[10];
+    static String telefonos[] = new String[10];
+    static String fechasNac[] = new String[10];
+    
+    static void reader(){
+        BufferedReader br = null;
+        try {
+            br = new BufferedReader(new FileReader("C:\\Users\\jorge\\Java101\\AgendaTelefonica\\AgendaTelefonica\\db.txt"));
+            String line;
+            int i=0;
+            while ((line = br.readLine()) != null) {
+                String[] data = line.split("\\|");
+                DNIS[i] = data[0];
+                nombres[i] = data[1];
+                apellidos[i] = data[2];
+                direcciones[i] = data[3];
+                telefonos[i] = data[4];
+                fechasNac[i] = data[5];
+                System.out.println(DNIS[i]+" - "+nombres[i]+" - "+apellidos[i]);
+                i++;
+            }
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if (br != null) {
+                    br.close(); // Cierra el BufferedReader
+                }
+            } catch (IOException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+
+    
+    static void writer(String DNI, String nombre, String apellido, String direccion, String telefono, String fechaNac) {
+        try{
+            FileWriter myWriter = new FileWriter("db.txt", true);
+            myWriter.write(DNI+"|"+nombre+"|"+apellido+"|"+direccion+"|"+telefono+"|"+fechaNac+"|"+"\n");
+            myWriter.close();
+        }catch (IOException e){
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }  
+    }
     
     public Principal() {
         initComponents();
+        reader();
     }
 
     @SuppressWarnings("unchecked")
@@ -283,6 +336,8 @@ public class Principal extends javax.swing.JFrame {
         direcciones[indiceNum] = txtDireccion.getText();
         telefonos[indiceNum] = txtTelefono.getText();
         fechasNac[indiceNum] = txtFechaNac.getText();
+        
+        writer(DNIS[indiceNum],nombres[indiceNum],apellidos[indiceNum],direcciones[indiceNum],telefonos[indiceNum],fechasNac[indiceNum]);
         
     }//GEN-LAST:event_btnGuardarActionPerformed
 
